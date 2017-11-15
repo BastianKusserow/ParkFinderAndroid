@@ -13,7 +13,14 @@ import android.view.ViewGroup
 import com.example.basti.parkfinder.Model.LotEntry
 import com.example.basti.parkfinder.Model.LotModel
 import com.example.basti.parkfinder.Model.LotModelSingleton
+import com.example.basti.parkfinder.interfaces.IDBApi
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_lot_table.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class LotTableFragment : Fragment() {
@@ -38,17 +45,38 @@ class LotTableFragment : Fragment() {
         val adapter = RecyclerViewAdapter()
         recyclerView.adapter = adapter
 
-        model.getLotData().observe(this, Observer<MutableList<LotEntry>> { list ->
-            adapter.setItems(list!!)
+        model.getLotData().observe(this, Observer<LotEntry> { list ->
+            Log.d("VIEWMODEL", list!!.lots.size.toString())
+            adapter.setItems(list)
         })
 
+        val gson = GsonBuilder().create()
+        val retrofit = Retrofit.Builder().baseUrl("https://api.deutschebahn.com/bahnpark/v1/").
+                addConverterFactory(GsonConverterFactory.create(gson)).build()
 
+        val api = retrofit.create(IDBApi::class.java)
+
+        val call = api.getLots()
+        call.enqueue(object : Callback<LotEntry> {
+
+            override fun onFailure(call: Call<LotEntry>?, t: Throwable?) {
+                Log.d("FAILURE", t!!.message)
+            }
+
+            override fun onResponse(call: Call<LotEntry>?, response: Response<LotEntry>?) {
+                val code = response!!.code()
+                Log.d("TAAAAAAG", code.toString())
+                val data = response.body()!!
+                LotModelSingleton.instance.lotData = data
+                Log.d("TAAAAAg", data.toString())
+            }
+        })
 
 
         view.fab.setOnClickListener {
             Log.d("###", "appended")
-            val lot3 = LotEntry("3", "Parkhaus Hof 3", "Hauptstraße", null, null, null, "100", "10", null, null, null, null, null, null, null)
-            LotModelSingleton.instance.add(lot3)
+            //val lot3 = LotEntry("3", "Parkhaus Hof 3", "Hauptstraße", null, null, null, "100", "10", null, null, null, null, null, null, null)
+            //LotModelSingleton.instance.add(lot3)
         }
 
         return view
