@@ -1,16 +1,13 @@
 package com.example.basti.parkfinder
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.basti.parkfinder.Model.LotEntry
 
-/**
- * Created by Basti on 31.10.17.
- */
 class RecyclerViewAdapter() : RecyclerView.Adapter<MyViewHolder>() {
 
-
+    private var mLotData = mutableListOf<LotEntry>()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
 
@@ -19,11 +16,17 @@ class RecyclerViewAdapter() : RecyclerView.Adapter<MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
-        holder!!.bind("Test")
+        val entry = mLotData[position]
+        holder!!.bind(entry.mLotName)
     }
 
     override fun getItemCount(): Int {
-        return 50
+        return mLotData.count()
+    }
+
+    fun setItems(list: MutableList<LotEntry>) {
+        mLotData = list
+        notifyDataSetChanged()
     }
 
 }
