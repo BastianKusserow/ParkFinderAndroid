@@ -18,7 +18,7 @@ class RecyclerViewAdapter() : RecyclerView.Adapter<MyViewHolder>() {
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         val entry = mLotData.lots[position]
-        holder!!.bind(entry.mLotName)
+        holder!!.bind(entry)
     }
 
     override fun getItemCount(): Int {
