@@ -1,9 +1,28 @@
 package com.example.basti.parkfinder.Model
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 
-data class LotEntry(@SerializedName("items") val lots: MutableList<LotItem>)
+class LotEntry(lots: MutableList<LotItem>) : Observable() {
+
+    @SerializedName("items")
+    var lots: MutableList<LotItem> = lots
+        set(value) {
+            field = value
+            setChanged()
+            notifyObservers()
+        }
+
+    fun getElement(id: String): Int? {
+
+        val index = lots.indexOfFirst { it.mLotID == id }
+        if (index >= 0) {
+            return index
+        }
+        return null
+    }
+}
 
 ////@SerializedName("id") val mLotID: String,
 ////@SerializedName("title") val mLotName: String,

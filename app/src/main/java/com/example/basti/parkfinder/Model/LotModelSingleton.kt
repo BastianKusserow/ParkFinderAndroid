@@ -14,6 +14,7 @@ class LotModelSingleton private constructor() : Observable() {
             field = value
             setChanged()
             notifyObservers()
+
         }
 
     companion object {

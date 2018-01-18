@@ -7,5 +7,7 @@ data class LotItem(@SerializedName("id") val mLotID: String,
                    @SerializedName("address") val mAdress: Address,
                    @SerializedName("openingHours") val openingHours: String,
                    @SerializedName("numberParkingPlaces") val stellplaetze: String,
-                   @SerializedName("geoLocation") val geoLocation: GeoLocation) {
+                   @SerializedName("geoLocation") val geoLocation: GeoLocation,
+                   var details: Allocations?
+) {
 }

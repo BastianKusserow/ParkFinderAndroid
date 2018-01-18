@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import com.example.basti.parkfinder.Download.JSONLoader
 import com.example.basti.parkfinder.Model.LotEntry
 import com.example.basti.parkfinder.Model.LotModel
+import kotlinx.android.synthetic.main.fragment_lot_table.*
 import kotlinx.android.synthetic.main.fragment_lot_table.view.*
 
 
@@ -30,34 +31,43 @@ class LotTableFragment : Fragment() {
         val view = inflater!!.inflate(R.layout.fragment_lot_table, container, false)
         val model = ViewModelProviders.of(activity).get(LotModel::class.java)
 
-        val recyclerView = view.recyclerView
+        view.swipeRefresh.setOnRefreshListener { JSONLoader(context).downloadData() }
+
+
+        JSONLoader(context).downloadData()
+        model.getLotData().observe(this, Observer<LotEntry> { list ->
+            Log.d("DOWNLOAD", "SET CHANGED")
+            (recyclerView.adapter as RecyclerViewAdapter).setItems(list!!)
+            (recyclerView.adapter as RecyclerViewAdapter).notifyDataSetChanged()
+            view.swipeRefresh.isRefreshing = false
+        })
+
+
+
+        return view
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setupRecyclerView()
+    }
+
+    fun setupRecyclerView() {
+        val recyclerView = view!!.recyclerView
 
         val mgr = LinearLayoutManager(context)
         recyclerView.layoutManager = mgr
 
         val adapter = RecyclerViewAdapter()
         recyclerView.adapter = adapter
-
-        view.swipeRefresh.setOnRefreshListener { JSONLoader(context).downloadData() }
-
-
-        model.getLotData().observe(this, Observer<LotEntry> { list ->
-            Log.d("VIEWMODEL", list!!.lots.size.toString())
-            adapter.setItems(list)
-        })
-
-        JSONLoader(context).downloadData()
-       
-        return view
     }
+
 
     companion object {
 
-        fun newInstance(): LotTableFragment {
-            val fragment = LotTableFragment()
+        fun newInstance(): LotTableFragment = LotTableFragment()
 
-            return fragment
-        }
     }
 
-}// Required empty public constructor
+}

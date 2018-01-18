@@ -17,7 +17,7 @@ class RecyclerViewAdapter() : RecyclerView.Adapter<MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
-        val entry = mLotData.lots[position]
+        val entry = LotModelSingleton.instance.lotData.lots[position]
         holder!!.bind(entry)
     }
 

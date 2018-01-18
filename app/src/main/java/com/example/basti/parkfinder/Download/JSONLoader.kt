@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.example.basti.parkfinder.Model.DetailEntry
 import com.example.basti.parkfinder.Model.LotEntry
 import com.example.basti.parkfinder.Model.LotModelSingleton
 import com.example.basti.parkfinder.R
@@ -47,11 +48,52 @@ class JSONLoader(val context: Context) {
 
                 if (response != null) {
                     LotModelSingleton.instance.lotData = response.body()!!
+                    Log.d("DOWNLOAD", "Hauptdaten geladen")
                     printInfos(response)
+                    downloadDetails()
                 }
             }
         })
     }
+
+    fun downloadDetails() {
+        val api = retrofit.create(IDBApi::class.java)
+        val call = api.getOccupations()
+        call.enqueue(object : Callback<DetailEntry> {
+            override fun onFailure(call: Call<DetailEntry>?, t: Throwable?) {
+                Log.d("LALALA", "Onfailure")
+            }
+
+            override fun onResponse(call: Call<DetailEntry>?, response: Response<DetailEntry>?) {
+                Log.d("LALALA", response!!.body().toString())
+
+                response?.let { response ->
+
+                    Log.d("DOWNLOAD", "Versuche die details zu setzen")
+                    setDetails(response.body()!!)
+
+                }
+            }
+        })
+    }
+
+    fun setDetails(details: DetailEntry) {
+        val copy = LotModelSingleton.instance.lotData
+
+        for (element in details.allocations) {
+            var index = LotModelSingleton.instance.lotData.getElement(element.space.id)
+
+            index?.let {
+                copy.lots[index].details = element
+            }
+
+
+        }
+        Log.d("DOWNLOAD", "List will be sorted and set")
+        copy.lots.sortBy { it.details == null }
+        LotModelSingleton.instance.lotData = copy
+    }
+
 
     private fun printInfos(response: Response<LotEntry>) {
         val data = response.body()!!
@@ -66,6 +108,7 @@ class JSONLoader(val context: Context) {
             val intent = Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
             context.startActivity(intent)
         }).create()
+
         alert.show()
     }
 }

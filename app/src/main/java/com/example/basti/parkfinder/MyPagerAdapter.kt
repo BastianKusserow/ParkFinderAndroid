@@ -10,7 +10,12 @@ import android.support.v4.app.FragmentStatePagerAdapter
 class MyPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm){
 
     override fun getItem(position: Int): Fragment {
-       return LotTableFragment.newInstance()
+        when (position) {
+            0 -> return LotTableFragment.newInstance()
+            1 -> return MapFragment.newInstance()
+        }
+
+        return LotTableFragment.newInstance()
     }
 
     override fun getCount(): Int {
