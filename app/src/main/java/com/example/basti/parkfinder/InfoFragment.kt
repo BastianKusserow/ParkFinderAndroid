@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.basti.parkfinder.Model.LotItem
+import com.example.basti.parkfinder.Model.CarPark
 import com.google.maps.model.LatLng
 
 import kotlinx.android.synthetic.main.fragment_info.view.*
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_info.view.*
 
 class InfoFragment : Fragment() {
 
-    var lotItem: LotItem? = null
+    var carPark: CarPark? = null
     var hideFab = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class InfoFragment : Fragment() {
     }
 
     fun setupLabels() {
-        lotItem?.let {
+        carPark?.let {
             view!!.name.text = it.mLotName
             view!!.adress.text = "${it.mAdress.street}, ${it.mAdress.city}"
             view!!.openingHours.text = it.openingHours
@@ -58,7 +58,7 @@ class InfoFragment : Fragment() {
         val fm = MapFragment()
         fm.hideParkButton = true
         val ft = activity.supportFragmentManager.beginTransaction()
-        fm.destination = LatLng(lotItem!!.geoLocation.latitude, lotItem!!.geoLocation.longitude)
+        fm.destination = LatLng(carPark!!.geoLocation.latitude, carPark!!.geoLocation.longitude)
         ft.replace(R.id.LotTableFragment, fm).addToBackStack(null)
         ft.commit()
     }

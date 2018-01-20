@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/Parkplaetze"
-        android:icon="@android:drawable/ic_dialog_email"
+        android:icon="@android:drawable/ic_menu_myplaces"
         android:title="Parkplätze" />
     <group />
     <item

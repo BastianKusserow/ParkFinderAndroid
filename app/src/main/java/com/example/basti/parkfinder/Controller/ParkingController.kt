@@ -48,7 +48,7 @@ class ParkingController(val mapDelegate: MapDelegate, val context: Context) {
 
     fun parkCar() {
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            {}
+
             LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener { location ->
 
                 val markerOptions = MarkerOptions().title("My Car").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))

@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 
-class LotEntry(lots: MutableList<LotItem>) : Observable() {
+class CarParkItems(lots: MutableList<CarPark>) : Observable() {
 
     @SerializedName("items")
-    var lots: MutableList<LotItem> = lots
+    var lots: MutableList<CarPark> = lots
         set(value) {
             field = value
             setChanged()

@@ -6,20 +6,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import com.example.basti.parkfinder.Model.LotItem
-import com.example.basti.parkfinder.Model.LotModelSingleton
+import com.example.basti.parkfinder.Model.CarPark
+import com.example.basti.parkfinder.Model.CarParktModelSingleton
 
 class RecyclerViewAdapter(val listener: OnItemClickListener) : RecyclerView.Adapter<MyViewHolder>(), Filterable {
     override fun getFilter(): Filter {
         val filter = object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val results = FilterResults()
-                var filteredArrayNames = listOf<LotItem>()
+                var filteredArrayNames = listOf<CarPark>()
 
                 // perform your search here using the searchConstraint String.
 
                 val aConstraint = constraint.toString().toLowerCase()
-                val zwsp = LotModelSingleton.instance.lotData
+                val zwsp = CarParktModelSingleton.instance.lotData
 
                 filteredArrayNames = zwsp.lots.filter { it.mLotName.contains(aConstraint, true) }
 
@@ -37,7 +37,7 @@ class RecyclerViewAdapter(val listener: OnItemClickListener) : RecyclerView.Adap
             }
 
             override fun publishResults(p0: CharSequence?, results: FilterResults?) {
-                arrayListNames = results!!.values as MutableList<LotItem>
+                arrayListNames = results!!.values as MutableList<CarPark>
                 setItems(arrayListNames)
             }
 
@@ -45,8 +45,8 @@ class RecyclerViewAdapter(val listener: OnItemClickListener) : RecyclerView.Adap
         return filter
     }
 
-    private var mLotData = LotModelSingleton.instance.lotData
-    var arrayListNames = LotModelSingleton.instance.lotData.lots
+    private var mLotData = CarParktModelSingleton.instance.lotData
+    var arrayListNames = CarParktModelSingleton.instance.lotData.lots
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
 
@@ -63,7 +63,7 @@ class RecyclerViewAdapter(val listener: OnItemClickListener) : RecyclerView.Adap
         return arrayListNames.size
     }
 
-    fun setItems(list: MutableList<LotItem>) {
+    fun setItems(list: MutableList<CarPark>) {
         arrayListNames = list
         notifyDataSetChanged()
     }

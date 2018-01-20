@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.example.basti.parkfinder.Model.DetailEntry
-import com.example.basti.parkfinder.Model.LotEntry
-import com.example.basti.parkfinder.Model.LotModelSingleton
+import com.example.basti.parkfinder.Model.CarParkItems
+import com.example.basti.parkfinder.Model.CarParktModelSingleton
 import com.example.basti.parkfinder.R
 import com.example.basti.parkfinder.interfaces.IDBApi
 import com.google.gson.GsonBuilder
@@ -37,17 +37,17 @@ class JSONLoader(val context: Context) {
         val api = retrofit.create(IDBApi::class.java)
 
         val call = api.getLots()
-        call.enqueue(object : Callback<LotEntry> {
+        call.enqueue(object : Callback<CarParkItems> {
 
-            override fun onFailure(call: Call<LotEntry>?, t: Throwable?) {
+            override fun onFailure(call: Call<CarParkItems>?, t: Throwable?) {
                 Log.d("####", "FAIL")
                 displayAlert()
             }
 
-            override fun onResponse(call: Call<LotEntry>?, response: Response<LotEntry>?) {
+            override fun onResponse(call: Call<CarParkItems>?, response: Response<CarParkItems>?) {
 
                 if (response != null) {
-                    LotModelSingleton.instance.lotData = response.body()!!
+                    CarParktModelSingleton.instance.lotData = response.body()!!
                     Log.d("DOWNLOAD", "Hauptdaten geladen")
                     printInfos(response)
                     downloadDetails()
@@ -78,10 +78,10 @@ class JSONLoader(val context: Context) {
     }
 
     fun setDetails(details: DetailEntry) {
-        val copy = LotModelSingleton.instance.lotData
+        val copy = CarParktModelSingleton.instance.lotData
 
         for (element in details.allocations) {
-            var index = LotModelSingleton.instance.lotData.getElement(element.space.id)
+            var index = CarParktModelSingleton.instance.lotData.getElement(element.space.id)
 
             index?.let {
                 copy.lots[index].details = element
@@ -91,11 +91,11 @@ class JSONLoader(val context: Context) {
         }
         Log.d("DOWNLOAD", "List will be sorted and set")
         copy.lots.sortBy { it.details == null }
-        LotModelSingleton.instance.lotData = copy
+        CarParktModelSingleton.instance.lotData = copy
     }
 
 
-    private fun printInfos(response: Response<LotEntry>) {
+    private fun printInfos(response: Response<CarParkItems>) {
         val data = response.body()!!
         val code = response.code()
         Log.d("Request Code: ", code.toString())

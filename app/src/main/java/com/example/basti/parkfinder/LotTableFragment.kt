@@ -12,9 +12,9 @@ import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import com.example.basti.parkfinder.Download.JSONLoader
-import com.example.basti.parkfinder.Model.LotEntry
-import com.example.basti.parkfinder.Model.LotItem
-import com.example.basti.parkfinder.Model.LotModel
+import com.example.basti.parkfinder.Model.CarParkItems
+import com.example.basti.parkfinder.Model.CarPark
+import com.example.basti.parkfinder.Model.CarParkViewModel
 import kotlinx.android.synthetic.main.fragment_lot_table.*
 import kotlinx.android.synthetic.main.fragment_lot_table.view.*
 
@@ -31,13 +31,13 @@ class LotTableFragment : Fragment(), OnItemClickListener {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_lot_table, container, false)
-        val model = ViewModelProviders.of(activity).get(LotModel::class.java)
+        val model = ViewModelProviders.of(activity).get(CarParkViewModel::class.java)
 
         view.swipeRefresh.setOnRefreshListener { JSONLoader(context).downloadData() }
 
 
         JSONLoader(context).downloadData()
-        model.getLotData().observe(this, Observer<LotEntry> { list ->
+        model.getLotData().observe(this, Observer<CarParkItems> { list ->
             Log.d("DOWNLOAD", "SET CHANGED")
 
             (recyclerView.adapter as RecyclerViewAdapter).setItems(list!!.lots)
@@ -89,10 +89,10 @@ class LotTableFragment : Fragment(), OnItemClickListener {
 
     }
 
-    override fun onItemClick(item: LotItem) {
+    override fun onItemClick(item: CarPark) {
         val ft = activity.supportFragmentManager.beginTransaction()
         val fm = InfoFragment.newInstance()
-        fm.lotItem = item
+        fm.carPark = item
         ft.replace(R.id.LotTableFragment, fm).addToBackStack(null)
         ft.commit()
 
@@ -111,7 +111,7 @@ class LotTableFragment : Fragment(), OnItemClickListener {
 
 interface OnItemClickListener {
 
-    fun onItemClick(item: LotItem);
+    fun onItemClick(item: CarPark);
 
 }
 

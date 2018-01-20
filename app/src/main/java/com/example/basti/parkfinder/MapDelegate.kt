@@ -17,10 +17,11 @@ import android.widget.Toast
 import com.example.basti.parkfinder.Controller.MapUtil
 import com.example.basti.parkfinder.Controller.RouteCalculationListener
 import com.example.basti.parkfinder.Controller.RoutingController
-import com.example.basti.parkfinder.Model.LotEntry
-import com.example.basti.parkfinder.Model.LotItem
-import com.example.basti.parkfinder.Model.LotModel
+import com.example.basti.parkfinder.Model.CarParkItems
+import com.example.basti.parkfinder.Model.CarPark
+import com.example.basti.parkfinder.Model.CarParkViewModel
 import com.example.basti.parkfinder.Model.ParkModel
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -70,21 +71,21 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
 
         map!!.uiSettings.isZoomControlsEnabled = true
 
-        /*val lm = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val lm = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && permission==PackageManager.PERMISSION_GRANTED) {
             LocationServices.getFusedLocationProviderClient(activity).lastLocation.addOnSuccessListener {
                 if (it!=null)
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 15f))
             }
-        }*/
+        }
 
         if (destination != null) {
             ctrl!!.route(map, destination)
             registerRerouteListener()
         }
 
-        val model = ViewModelProviders.of(activity).get(LotModel::class.java)
-        model.getLotData().observe(activity, Observer<LotEntry> { list ->
+        val model = ViewModelProviders.of(activity).get(CarParkViewModel::class.java)
+        model.getLotData().observe(activity, Observer<CarParkItems> { list ->
             MapUtil(activity).populate(map, list!!)
         })
 
@@ -100,10 +101,6 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
 
         val listener = object : LocationListener {
             override fun onLocationChanged(p0: Location?) {
-                /*p0?.let {
-
-                    map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0!!.latitude, p0!!.longitude), map!!.cameraPosition.zoom))
-                }*/
 
                 if (destination != null) {
                     Toast.makeText(activity, "Location Changed, Rerouting", Toast.LENGTH_LONG).show()
@@ -129,7 +126,7 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
     override fun onInfoWindowClick(p0: Marker?) {
         Log.i("PARKFINDER", "On Info window clicked")
         var fm = InfoFragment()
-        fm.lotItem = p0!!.tag as LotItem
+        fm.carPark = p0!!.tag as CarPark
         fm.hideFab = true
         activity.supportFragmentManager.beginTransaction().replace(R.id.container, fm).addToBackStack(null).commit()
     }

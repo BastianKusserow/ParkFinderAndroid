@@ -1,8 +1,8 @@
 package com.example.basti.parkfinder.Controller
 
 import android.content.Context
-import com.example.basti.parkfinder.Model.LotEntry
-import com.example.basti.parkfinder.Model.LotItem
+import com.example.basti.parkfinder.Model.CarParkItems
+import com.example.basti.parkfinder.Model.CarPark
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.MarkerOptions
  */
 class MapUtil(val context: Context) {
 
-    fun calculateColor(lot: LotItem): Float {
+    fun calculateColor(lot: CarPark): Float {
         var resultColor = BitmapDescriptorFactory.HUE_AZURE
         lot.details?.let {
             val capacity = it.allocation.capacity?.toDoubleOrNull()
@@ -35,7 +35,7 @@ class MapUtil(val context: Context) {
         return resultColor
     }
 
-    fun populate(map: GoogleMap, list: LotEntry) {
+    fun populate(map: GoogleMap, list: CarParkItems) {
         for (lot in list!!.lots) {
             var marker = map!!.addMarker(MarkerOptions()
                     .position(LatLng(lot.geoLocation.latitude, lot.geoLocation.longitude))

@@ -1,6 +1,6 @@
 package com.example.basti.parkfinder.interfaces
 
-import com.example.basti.parkfinder.Model.LotEntry
+import com.example.basti.parkfinder.Model.CarParkItems
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -10,5 +10,5 @@ import retrofit2.http.GET
 interface DirectionsApi {
 
     @GET
-    fun getPolylinePoints(): Call<LotEntry>
+    fun getPolylinePoints(): Call<CarParkItems>
 }

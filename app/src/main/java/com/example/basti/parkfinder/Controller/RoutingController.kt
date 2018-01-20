@@ -55,7 +55,7 @@ class RoutingController(val context: Context, val supervisor: RouteCalculationLi
             override fun onResult(result: DirectionsResult?) {
                 Log.d("#######", "OnResultCalled: " + result!!.routes[0].legs[0].endAddress)
                 val options = PolylineOptions()
-                options.width(10f).color(Color.MAGENTA)
+                options.width(10f).color(Color.parseColor("#2196F3"))
 
 
                 for (loc in result!!.routes[0].legs[0].steps) {

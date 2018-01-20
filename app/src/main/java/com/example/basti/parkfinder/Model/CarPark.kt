@@ -2,7 +2,7 @@ package com.example.basti.parkfinder.Model
 
 import com.google.gson.annotations.SerializedName
 
-data class LotItem(@SerializedName("id") val mLotID: String,
+data class CarPark(@SerializedName("id") val mLotID: String,
                    @SerializedName("title") val mLotName: String,
                    @SerializedName("address") val mAdress: Address,
                    @SerializedName("openingHours") val openingHours: String,
