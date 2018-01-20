@@ -25,6 +25,7 @@ class MyNavItemSelectedListener : BottomNavigationView.OnNavigationItemSelectedL
             }
             R.id.Karte -> {
                 vp!!.currentItem = 1
+
                 return true
             }
         }

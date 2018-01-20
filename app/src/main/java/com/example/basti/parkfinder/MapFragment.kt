@@ -1,6 +1,10 @@
 package com.example.basti.parkfinder
 
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
@@ -10,53 +14,99 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.basti.parkfinder.Controller.ParkingController
 import com.example.basti.parkfinder.Model.ParkModel
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Marker
 import kotlinx.android.synthetic.main.fragment_map.view.*
 
 
 class MapFragment : Fragment() {
+    private var mapDelegate: MapDelegate? = null
 
-    var mapDelegate: MapDelegate? = null
+    private var listener: LocationListener? = null
+    private var gpsEnabled = true
+    var destination: com.google.maps.model.LatLng? = null
+    var hideParkButton = false
 
-    fun parkCar() {
-
-        if (ParkModel.readFromFile(context) == null) {
-            Log.i("PERSISTANCE", "no object saved")
-        }
-
-
-
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.getFusedLocationProviderClient(activity).lastLocation.addOnSuccessListener { location ->
-                mapDelegate!!.getMap().addMarker(MarkerOptions().title("My Car").icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-                        .position(LatLng(location.latitude, location.longitude)))
-                ParkModel(location.latitude, location.longitude).saveToFile(context)
-                Log.i("PERSISNTACE", "object saved")
-            }
-
-        }
-
-
-    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view = inflater!!.inflate(R.layout.fragment_map, container, false)
         view.mapView.onCreate(savedInstanceState)
-        mapDelegate = MapDelegate(activity)
+        mapDelegate = MapDelegate(activity, destination)
         view.mapView.getMapAsync(mapDelegate)
         setupPermission()
         view.parkButton.setOnClickListener { parkCar() }
 
 
+        if (hideParkButton) {
+            view.parkButton.visibility = View.INVISIBLE
+        }
+
+        ParkModel.readFromFile(context)?.let { view.parkButton.text = "Navigiere zu Auto" }
+
+
         return view
+    }
+
+
+    private fun parkCar() {
+
+        val granted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (granted && gpsEnabled) {
+            if (ParkModel.readFromFile(context) != null) {
+                val parkModel = ParkModel.readFromFile(context)!!
+
+                mapDelegate!!.ctrl.route(mapDelegate!!.getMap(), com.google.maps.model.LatLng(parkModel.latitude, parkModel.longitude))
+                view!!.parkButton.text = "Park Car"
+                mapDelegate!!.parkMarker?.let { marker: Marker -> marker.remove() }
+            } else {
+                ParkingController(mapDelegate!!, context).parkCar()
+                view!!.parkButton.text = "Navigiere zu Auto"
+            }
+        } else {
+            Log.i("Permission", "Permission will be requested")
+            startGpsListener()
+
+        }
+
+
+    }
+
+
+    private fun startGpsListener() {
+
+
+        val lm = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        listener = object : LocationListener {
+            override fun onLocationChanged(p0: Location?) = Unit
+            override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) = Unit
+            override fun onProviderEnabled(p0: String?) {
+                // view!!.parkButton.alpha = 1f
+                // view!!.parkButton.isEnabled = true
+                gpsEnabled = true
+                view!!.mapView.getMapAsync(mapDelegate)
+            }
+
+            override fun onProviderDisabled(p0: String?) {
+                // view!!.parkButton.alpha = 0.5f
+                // view!!.parkButton.isEnabled = false
+                gpsEnabled = false
+            }
+
+
+        }
+        val granted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (granted) {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
+            Log.i("STATUS", "Listener rigistered")
+        } else {
+            gpsEnabled = false
+            setupPermission()
+        }
     }
 
 
@@ -75,29 +125,25 @@ class MapFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         view!!.mapView.onStart()
+        if (listener == null) {
+            startGpsListener()
+        }
+
     }
 
-
-    override fun onDetach() {
-        super.onDetach()
-    }
 
 
     fun setupPermission() {
 
-        val permission = ContextCompat.checkSelfPermission(context,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i("PERMISSION", "Permission to map denied")
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 val builder = AlertDialog.Builder(context)
-                builder.setMessage("Permission to access the microphone is required for this app to record audio.")
+                Log.i("Permission", "Permission alert")
+                builder.setMessage("Permission to access the GPS is required to run this App")
                         .setTitle("Permission required")
 
                 builder.setPositiveButton("OK"
-                ) { dialog, id ->
+                ) { _, _ ->
                     Log.i("ALERT", "Clicked")
                     makeRequest()
                 }
@@ -105,13 +151,14 @@ class MapFragment : Fragment() {
                 val dialog = builder.create()
                 dialog.show()
             } else {
+                Log.i("Permission", "Permission Request")
                 makeRequest()
 
-            }
+
         }
     }
 
-    fun makeRequest() = ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
+    fun makeRequest() = ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION), 101)
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -125,6 +172,7 @@ class MapFragment : Fragment() {
 
                     if (permission == PackageManager.PERMISSION_GRANTED) {
                         map.isMyLocationEnabled = true
+                        startGpsListener()
                     }
                     Log.i("PERMISSION", "Permission has been granted by user")
                 }
@@ -140,4 +188,4 @@ class MapFragment : Fragment() {
             return fragment
         }
     }
-}// Required empty public constructor
+}

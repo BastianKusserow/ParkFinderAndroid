@@ -1,18 +1,17 @@
 package com.example.basti.parkfinder.Controller
 
 import android.content.Context
-import android.util.Log
+import com.example.basti.parkfinder.Model.LotEntry
 import com.example.basti.parkfinder.Model.LotItem
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.maps.DirectionsApiRequest
-import com.google.maps.GeoApiContext
-import com.google.maps.model.LatLng
-import com.google.maps.model.TravelMode
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 /**
  * Created by Basti on 13.01.18.
  */
-class MapController(val context: Context) {
+class MapUtil(val context: Context) {
 
     fun calculateColor(lot: LotItem): Float {
         var resultColor = BitmapDescriptorFactory.HUE_AZURE
@@ -36,10 +35,13 @@ class MapController(val context: Context) {
         return resultColor
     }
 
-
-    fun calculateRoute() {
-        var result = DirectionsApiRequest(GeoApiContext.Builder().apiKey("AIzaSyBeepv58KvUX5hltuToydwYNEQIr38zm6M").build()).origin(LatLng(50.3209984, 11.9406706)).destination(LatLng(50.3209984, 11.9406706))
-                .mode(TravelMode.WALKING).optimizeWaypoints(true).await()
-        Log.i("DIRECTIONS RESULT", result.toString())
+    fun populate(map: GoogleMap, list: LotEntry) {
+        for (lot in list!!.lots) {
+            var marker = map!!.addMarker(MarkerOptions()
+                    .position(LatLng(lot.geoLocation.latitude, lot.geoLocation.longitude))
+                    .title(lot.mLotName).snippet(lot.mAdress.street).icon(BitmapDescriptorFactory.defaultMarker(MapUtil(context).calculateColor(lot))))
+            marker.tag = lot
+        }
     }
+
 }

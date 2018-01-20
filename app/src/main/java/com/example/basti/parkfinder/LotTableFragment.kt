@@ -1,29 +1,31 @@
 package com.example.basti.parkfinder
 
 
+import android.app.SearchManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import com.example.basti.parkfinder.Download.JSONLoader
 import com.example.basti.parkfinder.Model.LotEntry
+import com.example.basti.parkfinder.Model.LotItem
 import com.example.basti.parkfinder.Model.LotModel
 import kotlinx.android.synthetic.main.fragment_lot_table.*
 import kotlinx.android.synthetic.main.fragment_lot_table.view.*
 
 
-class LotTableFragment : Fragment() {
-
-
+class LotTableFragment : Fragment(), OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setHasOptionsMenu(true)
     }
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,7 +39,8 @@ class LotTableFragment : Fragment() {
         JSONLoader(context).downloadData()
         model.getLotData().observe(this, Observer<LotEntry> { list ->
             Log.d("DOWNLOAD", "SET CHANGED")
-            (recyclerView.adapter as RecyclerViewAdapter).setItems(list!!)
+
+            (recyclerView.adapter as RecyclerViewAdapter).setItems(list!!.lots)
             (recyclerView.adapter as RecyclerViewAdapter).notifyDataSetChanged()
             view.swipeRefresh.isRefreshing = false
         })
@@ -47,11 +50,31 @@ class LotTableFragment : Fragment() {
         return view
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupRecyclerView()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater!!.inflate(R.menu.options_menu, menu)
+
+        val searchManager = activity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu!!.findItem(R.id.search).actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                (recyclerView.adapter as RecyclerViewAdapter).filter.filter(p0)
+                return true
+            }
+
+        })
+    }
+
 
     fun setupRecyclerView() {
         val recyclerView = view!!.recyclerView
@@ -59,9 +82,22 @@ class LotTableFragment : Fragment() {
         val mgr = LinearLayoutManager(context)
         recyclerView.layoutManager = mgr
 
-        val adapter = RecyclerViewAdapter()
+        val adapter = RecyclerViewAdapter(this)
+
         recyclerView.adapter = adapter
+
+
     }
+
+    override fun onItemClick(item: LotItem) {
+        val ft = activity.supportFragmentManager.beginTransaction()
+        val fm = InfoFragment.newInstance()
+        fm.lotItem = item
+        ft.replace(R.id.LotTableFragment, fm).addToBackStack(null)
+        ft.commit()
+
+    }
+
 
 
     companion object {
@@ -70,4 +106,13 @@ class LotTableFragment : Fragment() {
 
     }
 
+
 }
+
+interface OnItemClickListener {
+
+    fun onItemClick(item: LotItem);
+
+}
+
+

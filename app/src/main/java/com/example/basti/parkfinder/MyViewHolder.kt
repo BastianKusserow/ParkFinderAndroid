@@ -7,9 +7,9 @@ import com.example.basti.parkfinder.Model.LotItem
 import kotlinx.android.synthetic.main.lot_table_cell.view.*
 
 
-class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(entry: LotItem) {
+    fun bind(entry: LotItem, listener: OnItemClickListener) {
         itemView.lotName.text = entry.mLotName
         itemView.streetName.text = entry.mAdress.street
         itemView.freeLots.text = entry.stellplaetze
@@ -22,6 +22,7 @@ class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             itemView.setBackgroundColor(calculateCellColor(percentage))
             itemView.occupation.text = string
         }
+        view.setOnClickListener { listener.onItemClick(entry) }
 
 
     }

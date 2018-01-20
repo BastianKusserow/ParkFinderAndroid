@@ -47,13 +47,13 @@ class ParkModel(val latitude: Double, val longitude: Double) : Serializable {
 
             return parkModel
         }
+
+        fun deleteFile(context: Context): Boolean {
+            val success = context.deleteFile(fileName)
+            Log.i("DELETION", success.toString())
+            return success
+        }
     }
 
-
-    fun deleteFile(context: Context): Boolean {
-        val success = context.deleteFile(fileName)
-        Log.i("DELETION", success.toString())
-        return success
-    }
 
 }
