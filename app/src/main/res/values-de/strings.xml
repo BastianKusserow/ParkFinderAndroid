@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parkify</string>
+    <string name="parking">Parkplätze</string>
+    <string name="map">Karte</string>
+    <string name="openingHours">Öffnungszeiten</string>
+    <string name="totalLots">Gesamte Parkplätze</string>
+    <string name="occupiedParkingLots">Besetzte Parkplätze</string>
+    <string name="parkCar">Auto parken</string>
+    <string name="notAvailable">Nicht verfügbar</string>
+</resources>
