@@ -1,8 +1,14 @@
 <resources>
-    <string name="app_name">ParkFinder</string>
+    <string name="app_name">Parkify</string>
 
-    <string name="baseURL_DBApi">https://api.deutschebahn.com/bahnpark/v1/</string>
+    <string name="baseURL_DBApi" translatable="false">https://api.deutschebahn.com/bahnpark/v1/</string>
+    <string name="parking">Parking</string>
+    <string name="map">Map</string>
+    <string name="openingHours">Opening hours</string>
+    <string name="totalLots">Total parking lots</string>
+    <string name="occupiedParkingLots">Occupied parking lots</string>
+    <string name="parkCar">Park Car</string>
+    <string name="notAvailable">Not available</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

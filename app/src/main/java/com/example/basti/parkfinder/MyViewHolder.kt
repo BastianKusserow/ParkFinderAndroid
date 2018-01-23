@@ -18,7 +18,11 @@ class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             val stellplaetze = entry.stellplaetze.toDouble()
             var percentage = 0.0
             capacity?.let { percentage = (capacity / stellplaetze) * 100 }
-            val string = String.format("%.1f", percentage)
+
+            if (percentage > 100) {
+                percentage = 100.0
+            }
+            val string = String.format("%.0f", percentage)
             itemView.setBackgroundColor(calculateCellColor(percentage))
             itemView.occupation.text = "Belegt: "+string+"%"
         }
