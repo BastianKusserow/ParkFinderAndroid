@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.basti.parkfinder.Controller.ParkingController
 import com.example.basti.parkfinder.Model.ParkModel
 import com.google.android.gms.maps.GoogleMap
@@ -83,7 +84,9 @@ class MapFragment : Fragment() {
 
         listener = object : LocationListener {
             override fun onLocationChanged(p0: Location?) = Unit
-            override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) = Unit
+            override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?){
+                Toast.makeText(activity, "GPS Status changed", Toast.LENGTH_SHORT)
+            }
             override fun onProviderEnabled(p0: String?) {
                 // view!!.parkButton.alpha = 1f
                 // view!!.parkButton.isEnabled = true
