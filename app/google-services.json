@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "673376776448",
+    "firebase_url": "https://parkfinderandroid.firebaseio.com",
+    "project_id": "parkfinderandroid",
+    "storage_bucket": "parkfinderandroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673376776448:android:3d5c01559abfb995",
+        "android_client_info": {
+          "package_name": "com.example.basti.parkfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673376776448-knsl4kh4l8bqspd4qr6va3kf4jttjbt3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.basti.parkfinder",
+            "certificate_hash": "a6f790cd222af19aabca20b42096c5e1bf01bb2d"
+          }
+        },
+        {
+          "client_id": "673376776448-ttv9o2839pch3gllqo8047vrcukg1679.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCismJVZgo7gpuHz6YWWdd58CZtILJBLbg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673376776448-ttv9o2839pch3gllqo8047vrcukg1679.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
