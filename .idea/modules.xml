@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ParkFinder.iml" filepath="$PROJECT_DIR$/ParkFinder.iml" />
       <module fileurl="file://D:\Benutzer\Dokumente\Uni\Android\ParkFinderAndroid\ParkFinder.iml" filepath="D:\Benutzer\Dokumente\Uni\Android\ParkFinderAndroid\ParkFinder.iml" />
       <module fileurl="file://$PROJECT_DIR$/ParkFinderAndroid.iml" filepath="$PROJECT_DIR$/ParkFinderAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

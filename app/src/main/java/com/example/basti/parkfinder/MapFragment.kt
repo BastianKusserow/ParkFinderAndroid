@@ -139,7 +139,7 @@ class MapFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         Log.i("INFLATER", "will inflate")
-
+        menu?.clear()
         inflater!!.inflate(R.menu.impressum_menu, menu)
     }
 

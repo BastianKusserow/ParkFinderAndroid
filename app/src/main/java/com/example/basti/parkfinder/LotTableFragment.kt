@@ -11,13 +11,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.AlphaAnimation
-import android.view.animation.AnimationUtils
 import android.widget.SearchView
 import com.example.basti.parkfinder.Download.JSONLoader
-import com.example.basti.parkfinder.Model.CarParkItems
 import com.example.basti.parkfinder.Model.CarPark
+import com.example.basti.parkfinder.Model.CarParkItems
 import com.example.basti.parkfinder.Model.CarParkViewModel
 import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.fragment_lot_table.*
@@ -65,17 +62,9 @@ class LotTableFragment : Fragment(), OnItemClickListener {
                 val linearLayoutManager = view.recyclerView.layoutManager as LinearLayoutManager
                 if(linearLayoutManager.childCount + linearLayoutManager.findFirstVisibleItemPosition() >= linearLayoutManager.itemCount-5){
                     view.adView.visibility = View.GONE
-                    //val startFadeOut = AnimationUtils.loadAnimation(context.applicationContext, R.anim.fade_out_anim)
-                    //view.adView.startAnimation(startFadeOut)
-                    //showAd = false
                 }
                 else{
                     view.adView.visibility = View.VISIBLE
-                    //if (!showAd) {
-                    //    val startFadeIn = AnimationUtils.loadAnimation(context.applicationContext, R.anim.fade_in_anim)
-                    //    view.adView.startAnimation(startFadeIn)
-                    //    showAd = true
-                    //}
                 }
             }
         })
