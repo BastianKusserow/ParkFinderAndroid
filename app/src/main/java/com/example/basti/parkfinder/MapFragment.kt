@@ -1,6 +1,7 @@
 package com.example.basti.parkfinder
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -11,9 +12,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import com.example.basti.parkfinder.Controller.ParkingController
 import com.example.basti.parkfinder.Model.ParkModel
@@ -23,8 +22,8 @@ import kotlinx.android.synthetic.main.fragment_map.view.*
 
 
 class MapFragment : Fragment() {
-    private var mapDelegate: MapDelegate? = null
 
+    private var mapDelegate: MapDelegate? = null
     private var listener: LocationListener? = null
     private var gpsEnabled = true
     var destination: com.google.maps.model.LatLng? = null
@@ -40,6 +39,7 @@ class MapFragment : Fragment() {
         view.mapView.getMapAsync(mapDelegate)
         setupPermission()
         view.parkButton.setOnClickListener { parkCar() }
+        setHasOptionsMenu(true)
 
 
         if (hideParkButton) {
@@ -131,9 +131,19 @@ class MapFragment : Fragment() {
         if (listener == null) {
             startGpsListener()
         }
-
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        Log.i("INFLATER", "will inflate")
+
+        inflater!!.inflate(R.menu.impressum_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val toImpressum = Intent(context, ImpressumActivity::class.java)
+        startActivity(toImpressum)
+        return true
+    }
 
 
     fun setupPermission() {

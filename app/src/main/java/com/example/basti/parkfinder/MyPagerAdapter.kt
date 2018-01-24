@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
-import android.util.Log
 
 /**
  * Created by Basti on 31.10.17.
@@ -18,7 +17,6 @@ class MyPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm), ViewP
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
     override fun onPageSelected(position: Int) {
-        Log.i("POSITION: ", position.toString())
         val menu = bottomNavigationView.menu
         bottomNavigationView.selectedItemId = menu.getItem(position).itemId
     }

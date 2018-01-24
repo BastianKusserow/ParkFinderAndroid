@@ -17,8 +17,8 @@ import android.widget.Toast
 import com.example.basti.parkfinder.Controller.MapUtil
 import com.example.basti.parkfinder.Controller.RouteCalculationListener
 import com.example.basti.parkfinder.Controller.RoutingController
-import com.example.basti.parkfinder.Model.CarParkItems
 import com.example.basti.parkfinder.Model.CarPark
+import com.example.basti.parkfinder.Model.CarParkItems
 import com.example.basti.parkfinder.Model.CarParkViewModel
 import com.example.basti.parkfinder.Model.ParkModel
 import com.google.android.gms.location.LocationServices
@@ -38,7 +38,6 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
         Handler(Looper.getMainLooper()).post(Runnable {
             Log.d("-------", "SupervisorCallback")
             this.polyline = map!!.addPolyline(options)
-            //map!!.addPolyline(options)
         })
 
     }
@@ -84,6 +83,7 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
             registerRerouteListener()
         }
 
+
         val model = ViewModelProviders.of(activity).get(CarParkViewModel::class.java)
         model.getLotData().observe(activity, Observer<CarParkItems> { list ->
             MapUtil(activity).populate(map, list!!)
@@ -108,7 +108,6 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
                     polyline?.remove()
                 }
             }
-
             override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) = Unit
             override fun onProviderEnabled(p0: String?) = Unit
             override fun onProviderDisabled(p0: String?) = Unit
@@ -130,5 +129,6 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
         fm.hideFab = true
         activity.supportFragmentManager.beginTransaction().replace(R.id.container, fm).addToBackStack(null).commit()
     }
+
 
 }

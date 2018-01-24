@@ -52,6 +52,7 @@
             </intent-filter
             -->
         </activity>
+        <activity android:name=".ImpressumActivity"></activity>
     </application>
 
 </manifest>
