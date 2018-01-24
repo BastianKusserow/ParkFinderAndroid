@@ -17,5 +17,6 @@
     <string name="navToCar">Navigate to car</string>
     <string name="locationChanged">Location changed, rerouting..</string>
     <string name="tariffs">Tariffs:</string>
+    <string name="activateGPS">Please activate your GPS</string>
 
 </resources>

@@ -16,4 +16,5 @@
     <string name="navToCar">Zum Auto navigieren</string>
     <string name="locationChanged">Standort geändert, wird neu berechnet</string>
     <string name="tariffs">Tarife:</string>
+    <string name="activateGPS">Bitte aktivieren Sie GPS</string>
 </resources>

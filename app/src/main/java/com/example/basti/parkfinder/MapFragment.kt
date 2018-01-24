@@ -1,11 +1,13 @@
 package com.example.basti.parkfinder
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -97,6 +99,8 @@ class MapFragment : Fragment() {
             override fun onProviderDisabled(p0: String?) {
                 // view!!.parkButton.alpha = 0.5f
                 // view!!.parkButton.isEnabled = false
+                Toast.makeText(context, R.string.activateGPS, Toast.LENGTH_LONG)
+                startActivity( Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 gpsEnabled = false
             }
 
@@ -105,6 +109,7 @@ class MapFragment : Fragment() {
         val granted = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
         if (granted) {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, listener)
+
             Log.i("STATUS", "Listener rigistered")
         } else {
             gpsEnabled = false
