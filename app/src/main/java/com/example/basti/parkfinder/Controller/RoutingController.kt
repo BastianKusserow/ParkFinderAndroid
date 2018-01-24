@@ -31,11 +31,12 @@ class RoutingController(val context: Context, val supervisor: RouteCalculationLi
         val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener {
+                it?.let {
+                    calculateRoute(com.google.maps.model.LatLng(it.latitude, it.longitude),
+                            com.google.maps.model.LatLng(to.lat, to.lng), TravelMode.DRIVING)
+                    ParkModel.deleteFile(context)
+                }
 
-                val polyline = calculateRoute(com.google.maps.model.LatLng(it.latitude, it.longitude),
-                        com.google.maps.model.LatLng(to.lat, to.lng), TravelMode.DRIVING)
-                ParkModel.deleteFile(context)
-                //supervisor?.onRouteCalculated(polyline)
             }
         }
 
