@@ -57,7 +57,7 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
         if (parkModel != null) {
             parkMarker = map!!.addMarker(MarkerOptions()
                     .position(LatLng(parkModel.latitude, parkModel.longitude))
-                    .title("My Car").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)))
+                    .title(activity.getString(R.string.myCar)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)))
         }
 
         map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(50.32275, 11.92632), 15f))
@@ -103,7 +103,7 @@ class MapDelegate(val activity: FragmentActivity, val destination: com.google.ma
             override fun onLocationChanged(p0: Location?) {
 
                 if (destination != null) {
-                    Toast.makeText(activity, "Location Changed, Rerouting", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, activity.getString(R.string.locationChanged), Toast.LENGTH_LONG).show()
                     ctrl.route(map!!, destination)
                     polyline?.remove()
                 }

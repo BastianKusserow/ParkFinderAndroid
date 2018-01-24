@@ -8,6 +8,8 @@ data class CarPark(@SerializedName("id") val mLotID: String,
                    @SerializedName("openingHours") val openingHours: String,
                    @SerializedName("numberParkingPlaces") val stellplaetze: String,
                    @SerializedName("geoLocation") val geoLocation: GeoLocation,
+                   @SerializedName("tariffInfo") val tariffInfo : TariffInfo,
+                   @SerializedName("tariffPrices") val tariffPrices : ArrayList<Tariff>,
                    var details: Allocations?
-) {
-}
+)
+

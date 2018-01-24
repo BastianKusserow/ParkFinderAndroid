@@ -44,9 +44,22 @@ class InfoFragment : Fragment() {
             view!!.openingHours.text = it.openingHours
             view!!.space.text = it.stellplaetze
             view!!.occupied.text = it.details?.allocation?.capacity
-
         }
+        setupPriceLabels()
 
+    }
+
+    private fun setupPriceLabels(){
+        carPark?.let {
+            for (item in it.tariffPrices){
+                when (item.duration){
+                    "30min" -> if(item.price != null)view!!.halfHourTV.text = item.price.toString().plus("€")
+                    "1hour" -> if(item.price != null)view!!.hourTV.text = item.price.toString().plus("€")
+                    "1day" -> if(item.price != null)view!!.dayTV.text = item.price.toString().plus("€")
+                    "1week" -> if(item.price != null)view!!.weekTV.text = item.price.toString().plus("€")
+                }
+            }
+        }
     }
 
     override fun onStart() {

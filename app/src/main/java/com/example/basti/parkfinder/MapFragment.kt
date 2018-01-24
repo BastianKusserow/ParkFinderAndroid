@@ -46,7 +46,7 @@ class MapFragment : Fragment() {
             view.parkButton.visibility = View.INVISIBLE
         }
 
-        ParkModel.readFromFile(context)?.let { view.parkButton.text = "Navigiere zu Auto" }
+        ParkModel.readFromFile(context)?.let { view.parkButton.text = context.getString(R.string.navToCar) }
 
 
         return view
@@ -61,11 +61,11 @@ class MapFragment : Fragment() {
                 val parkModel = ParkModel.readFromFile(context)!!
 
                 mapDelegate!!.ctrl.route(mapDelegate!!.getMap(), com.google.maps.model.LatLng(parkModel.latitude, parkModel.longitude))
-                view!!.parkButton.text = "Park Car"
+                view!!.parkButton.text = context.getString(R.string.parkCar)
                 mapDelegate!!.parkMarker?.let { marker: Marker -> marker.remove() }
             } else {
                 ParkingController(mapDelegate!!, context).parkCar()
-                view!!.parkButton.text = "Navigiere zu Auto"
+                view!!.parkButton.text = context.getString(R.string.navToCar)
             }
         } else {
             Log.i("Permission", "Permission will be requested")
@@ -85,7 +85,7 @@ class MapFragment : Fragment() {
         listener = object : LocationListener {
             override fun onLocationChanged(p0: Location?) = Unit
             override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?){
-                Toast.makeText(activity, "GPS Status changed", Toast.LENGTH_SHORT)
+                Toast.makeText(activity, R.string.gpsStatusChange, Toast.LENGTH_SHORT)
             }
             override fun onProviderEnabled(p0: String?) {
                 // view!!.parkButton.alpha = 1f
@@ -142,8 +142,8 @@ class MapFragment : Fragment() {
                     android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 val builder = AlertDialog.Builder(context)
                 Log.i("Permission", "Permission alert")
-                builder.setMessage("Permission to access the GPS is required to run this App")
-                        .setTitle("Permission required")
+                builder.setMessage(R.string.gpsPermissionInfo)
+                        .setTitle(R.string.permissionRequired)
 
                 builder.setPositiveButton("OK"
                 ) { _, _ ->

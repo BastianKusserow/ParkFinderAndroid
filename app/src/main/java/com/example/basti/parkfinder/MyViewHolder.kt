@@ -24,7 +24,9 @@ class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             }
             val string = String.format("%.0f", percentage)
             itemView.setBackgroundColor(calculateCellColor(percentage))
-            itemView.occupation.text = "Belegt: "+string+"%"
+            val occupiedStr =view.context.getString(R.string.occupied)
+            //val occupiedStr = Resources.getSystem().getString(R.string.occupied)+""
+            itemView.occupation.text = occupiedStr.plus(string).plus("%")
         }
         view.setOnClickListener { listener.onItemClick(entry) }
 
