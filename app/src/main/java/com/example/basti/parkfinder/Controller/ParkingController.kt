@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.support.v4.content.ContextCompat
 import com.example.basti.parkfinder.MapDelegate
 import com.example.basti.parkfinder.Model.ParkModel
+import com.example.basti.parkfinder.R
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -51,7 +52,7 @@ class ParkingController(val mapDelegate: MapDelegate, val context: Context) {
 
             LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener { location ->
 
-                val markerOptions = MarkerOptions().title("My Car").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                val markerOptions = MarkerOptions().title(context.getString(R.string.myCar)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                         .position(LatLng(location.latitude, location.longitude))
 
                 mapDelegate!!.parkMarker = mapDelegate!!.getMap().addMarker(markerOptions)

@@ -144,7 +144,7 @@ class LotTableFragment : Fragment(), OnItemClickListener {
 
 interface OnItemClickListener {
 
-    fun onItemClick(item: CarPark);
+    fun onItemClick(item: CarPark)
 
 }
 

@@ -8,4 +8,13 @@
     <string name="occupiedParkingLots">Besetzte Parkplätze</string>
     <string name="parkCar">Auto parken</string>
     <string name="notAvailable">Nicht verfügbar</string>
+    <string name="permissionRequired">Berechtigung benötigt</string>
+    <string name="gpsPermissionInfo">Damit die App ordnungsgemäß ausgeführt wird benötigt sie Zugriff auf GPS.</string>
+    <string name="gpsStatusChange">GPS Status geändert</string>
+    <string name="occupied">"Belegt: "</string>
+    <string name="myCar">Mein Auto</string>
+    <string name="navToCar">Zum Auto navigieren</string>
+    <string name="locationChanged">Standort geändert, wird neu berechnet</string>
+    <string name="tariffs">Tarife:</string>
+    <string name="activateGPS">Bitte aktivieren Sie GPS</string>
 </resources>

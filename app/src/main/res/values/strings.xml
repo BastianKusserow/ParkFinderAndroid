@@ -9,5 +9,14 @@
     <string name="occupiedParkingLots">Occupied parking lots</string>
     <string name="parkCar">Park Car</string>
     <string name="notAvailable">Not available</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="gpsPermissionInfo">Permission to access the GPS is required to run this App.</string>
+    <string name="gpsStatusChange">GPS status changed</string>
+    <string name="occupied">Occupied:</string>
+    <string name="myCar">My Car</string>
+    <string name="navToCar">Navigate to car</string>
+    <string name="locationChanged">Location changed, rerouting..</string>
+    <string name="tariffs">Tariffs:</string>
+    <string name="activateGPS">Please activate your GPS</string>
 
 </resources>
